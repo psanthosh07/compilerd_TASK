@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Compiler</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Code Compiler</h1>
+        <div class="form-group">
+            <label for="language">Select Language:</label>
+            <select id="language">
+                <option value="cpp">C++</option>
+                <option value="java">Java</option>
+                <option value="python">Python</option>
+                <option value="nodejs">Node.js</option>
+                <option value="ruby">Ruby</option>
+                <option value="go">Go</option>
+                <option value="swift">Swift</option>
+                <option value="rust">Rust</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="code">Enter Your Code:</label>
+            <textarea id="code" rows="10"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="input">Enter Input (if any):</label>
+            <textarea id="input" rows="3"></textarea>
+        </div>
+        <button onclick="runCode()">Run Code</button>
+        <div id="output-container">
+            <label>Output:</label>
+            <pre id="output"></pre>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
