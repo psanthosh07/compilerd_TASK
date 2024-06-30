@@ -300,4 +300,186 @@ const testCases = [
     },
 ]
 
-module.exports = { testCases }
+const additionalTestCases = [
+    {
+        name: 'python : infinite loop with input',
+        reqObject: {
+            language: 'python',
+            script:
+                'while True:\n' +
+                '    try:\n' +
+                '        x = int(input("Enter a number: "))\n' +
+                '        print("You entered:", x)\n' +
+                '    except ValueError:\n' +
+                '        print("Invalid input, please enter a number.")\n',
+            stdin: 'abc\n1\n2\n3\n',
+        },
+        expectedResponse: {
+            val: 'Invalid input, please enter a number.\n1\nYou entered: 2\nYou entered: 3\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'java : invalid input handling',
+        reqObject: {
+            language: 'java',
+            script:
+                'import java.util.Scanner;\n' +
+                'public class Solution {\n' +
+                '    public static void main(String[] args) {\n' +
+                '        Scanner scanner = new Scanner(System.in);\n' +
+                '        while (true) {\n' +
+                '            try {\n' +
+                '                int number = scanner.nextInt();\n' +
+                '                System.out.println("You entered: " + number);\n' +
+                '            } catch (Exception e) {\n' +
+                '                System.out.println("Invalid input, please enter a number.");\n' +
+                '                scanner.nextLine(); // Clear buffer\n' +
+                '            }\n' +
+                '        }\n' +
+                '    }\n' +
+                '}\n',
+            stdin: 'abc\n1\n2\n3\n',
+        },
+        expectedResponse: {
+            val: 'Invalid input, please enter a number.\nYou entered: 1\nYou entered: 2\nYou entered: 3\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'ruby : handle file input',
+        reqObject: {
+            language: 'ruby',
+            script:
+                'File.open("input.txt", "r") do |file|\n' +
+                '    while line = file.gets\n' +
+                '        puts line\n' +
+                '    end\n' +
+                'end\n',
+            stdin: '', // Simulate file input via another mechanism
+        },
+        expectedResponse: {
+            val: 'File contents here\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'cpp : handle large output',
+        reqObject: {
+            language: 'cpp',
+            script:
+                '#include<bits/stdc++.h>\n' +
+                'using namespace std;\n' +
+                'int main(){\n' +
+                '    for(int i=0; i<100000; i++) {\n' +
+                '        cout << i << " "; // Print large output\n' +
+                '    }\n' +
+                '    return 0;\n' +
+                '}\n',
+        },
+        expectedResponse: {
+            val: '0 1 2 3 4 5 6 7 8 9 ...', // Example truncated for brevity
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'nodejs : handle asynchronous operations',
+        reqObject: {
+            language: 'nodejs',
+            script:
+                'setTimeout(() => {\n' +
+                '    console.log("Delayed output");\n' +
+                '}, 1000);\n' +
+                'console.log("Immediate output");\n',
+        },
+        expectedResponse: {
+            val: 'Immediate output\nDelayed output\n',
+            status: 200,
+            error: 0,
+        },
+    },
+];
+const additionalTestCases2 = [
+    {
+        name: 'go : hello world',
+        reqObject: {
+            language: 'go',
+            script: 'package main\nimport "fmt"\nfunc main() {\n    fmt.Println("hello world")\n}',
+        },
+        expectedResponse: {
+            val: 'hello world\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'go : print stdin',
+        reqObject: {
+            language: 'go',
+            script: 'package main\nimport "fmt"\nfunc main() {\n    var input int\n    fmt.Scan(&input)\n    fmt.Println(input)\n}',
+            stdin: '42',
+        },
+        expectedResponse: {
+            val: '42\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'swift : hello world',
+        reqObject: {
+            language: 'swift',
+            script: 'print("hello world")',
+        },
+        expectedResponse: {
+            val: 'hello world\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'swift : print stdin',
+        reqObject: {
+            language: 'swift',
+            script: 'if let input = readLine() {\n    print(input)\n}',
+            stdin: '42',
+        },
+        expectedResponse: {
+            val: '42\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'rust : hello world',
+        reqObject: {
+            language: 'rust',
+            script: 'fn main() {\n    println!("hello world");\n}',
+        },
+        expectedResponse: {
+            val: 'hello world\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'rust : print stdin',
+        reqObject: {
+            language: 'rust',
+            script: 'use std::io;\nfn main() {\n    let mut input = String::new();\n    io::stdin().read_line(&mut input).expect("Failed to read line");\n    println!("{}", input.trim());\n}',
+            stdin: '42',
+        },
+        expectedResponse: {
+            val: '42\n',
+            status: 200,
+            error: 0,
+        },
+    },
+];
+
+module.exports = { testCases: [...testCases, ...additionalTestCases,...additionalTestCases2] };
+
